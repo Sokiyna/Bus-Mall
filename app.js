@@ -12,7 +12,9 @@ let leftImageIndex;
 let middleImageIndex;
 let rightImageIndex;
 
-
+let namesArr = [];
+let votesArr = [];
+let viewTimesArr = [];
 
 
 function Products(name, source) {
@@ -22,6 +24,7 @@ function Products(name, source) {
     this.votes = 0;
 
     Products.totalProducts.push(this);
+    namesArr.push(this.name);
 
 }
 
@@ -59,7 +62,11 @@ function makeRandomIndex() {
 
 console.log(makeRandomIndex);
 
+
+let repeatImg = [];
+
 function renderThreeImages() {
+
 
     rightImageIndex = makeRandomIndex();
     leftImageIndex = makeRandomIndex();
@@ -67,24 +74,40 @@ function renderThreeImages() {
 
 
 
-    while (leftImageIndex === middleImageIndex); {
-        leftImageIndex = makeRandomIndex();
-    }
 
-    while (middleImageIndex === rightImageIndex) {
+
+    while ((repeatImg.includes(leftImageIndex) || leftImageIndex === middleImageIndex) || (repeatImg.includes(rightImageIndex) || leftImageIndex === rightImageIndex) || repeatImg.includes(middleImageIndex) || middleImageIndex === rightImageIndex) {
+
+        leftImageIndex = makeRandomIndex();
         middleImageIndex = makeRandomIndex();
-    }
-    while (leftImageIndex === rightImageIndex) {
         rightImageIndex = makeRandomIndex();
     }
+
+    repeatImg = [];
+
+
+    repeatImg.push(leftImageIndex);
+    repeatImg.push(middleImageIndex);
+    repeatImg.push(rightImageIndex);
+
+    console.log(repeatImg);
+
+
 
 
 
 
 
     leftImageElement.src = Products.totalProducts[leftImageIndex].source;
+    Products.totalProducts[leftImageIndex].viewTimes++;
+
     middleImageElement.src = Products.totalProducts[middleImageIndex].source;
+    Products.totalProducts[middleImageIndex].viewTimes++;
+
     rightImageElement.src = Products.totalProducts[rightImageIndex].source;
+    Products.totalProducts[rightImageIndex].viewTimes++;
+
+
 
 
 }
@@ -96,6 +119,10 @@ let containerImgElement = document.getElementById('imges');
 
 containerImgElement.addEventListener('click', handleUserClick);
 
+
+
+console.log(votesArr);
+console.log(viewTimesArr);
 
 function handleUserClick(event) {
     console.log(event.target.id);
@@ -125,6 +152,8 @@ function handleUserClick(event) {
 
 
         console.log(Products.totalProducts);
+        console.log('votes :', votesArr);
+        console.log('views :', viewTimesArr);
         renderThreeImages();
     }
 
@@ -132,6 +161,11 @@ function handleUserClick(event) {
 
 
     else {
+        for (let i = 0; i < Products.totalProducts.length; i++) {
+            votesArr.push(Products.totalProducts[i].votes);
+            viewTimesArr.push(Products.totalProducts[i].viewTimes);
+        
+        }
         let button = document.getElementById('result-bt');
         button.addEventListener('click', resultBtn);
 
@@ -150,12 +184,57 @@ function handleUserClick(event) {
         }
 
         containerImgElement.removeEventListener('click', handleUserClick);
-
+        // console.log(votesArr);
+        chart();
 
     }
 
 
 
+
+
+
+
+}
+
+function chart() {
+
+    let ctx = document.getElementById('Chart1').getContext('2d');
+
+    let chart = new Chart(ctx, {
+
+        type: 'bar',
+
+        //  the data for showing
+        data: {
+            //  for the names
+            labels: namesArr,
+
+            datasets: [
+                {
+                    label: 'Products Chart',
+                    data: votesArr,
+                    backgroundColor: [
+                        '#810000',
+                    ],
+
+                    borderWidth: 1
+                },
+
+                {
+                    label: 'Products View Times',
+                    data: viewTimesArr,
+                    backgroundColor: [
+                        'black',
+                    ],
+
+                    borderWidth: 1
+                }
+
+            ]
+        },
+        options: {}
+    });
 
 
 
