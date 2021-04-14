@@ -30,6 +30,27 @@ function Products(name, source) {
 
 Products.totalProducts = [];
 
+function updateLocalStorage(){
+
+
+    let stringArr=JSON.stringify(Products.totalProducts);
+    console.log(stringArr);
+    localStorage.setItem('Products', stringArr);
+
+}
+
+
+function getLocalStorage() {
+
+    let products = localStorage.getItem('Products');
+    let productsData = JSON.parse(products);
+    if (productsData !== null) {
+        Products.totalProducts = productsData;
+    }
+    console.log(productsData);
+
+}
+
 
 
 new Products('bag', 'img/bag.jpg');
@@ -168,7 +189,8 @@ function handleUserClick(event) {
         }
         let button = document.getElementById('result-bt');
         button.addEventListener('click', resultBtn);
-
+        
+           updateLocalStorage();
         function resultBtn(event) {
 
             let list = document.getElementById('results');
@@ -240,4 +262,3 @@ function chart() {
 
 
 }
-
