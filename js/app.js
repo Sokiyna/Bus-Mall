@@ -119,11 +119,7 @@ let containerImgElement = document.getElementById('imges');
 
 containerImgElement.addEventListener('click', handleUserClick);
 
-for (let i = 0; i < Products.totalProducts.length; i++) {
-    votesArr.push(Products.totalProducts[i].votes);
-    viewTimesArr.push(Products.totalProducts[i].viewTimes);
 
-}
 
 console.log(votesArr);
 console.log(viewTimesArr);
@@ -156,6 +152,8 @@ function handleUserClick(event) {
 
 
         console.log(Products.totalProducts);
+        console.log('votes :', votesArr);
+        console.log('views :', viewTimesArr);
         renderThreeImages();
     }
 
@@ -163,6 +161,11 @@ function handleUserClick(event) {
 
 
     else {
+        for (let i = 0; i < Products.totalProducts.length; i++) {
+            votesArr.push(Products.totalProducts[i].votes);
+            viewTimesArr.push(Products.totalProducts[i].viewTimes);
+        
+        }
         let button = document.getElementById('result-bt');
         button.addEventListener('click', resultBtn);
 
@@ -181,7 +184,8 @@ function handleUserClick(event) {
         }
 
         containerImgElement.removeEventListener('click', handleUserClick);
-
+        // console.log(votesArr);
+        chart();
 
     }
 
@@ -237,7 +241,7 @@ function chart() {
 
 }
 
-chart();
+
 
 
 
